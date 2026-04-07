@@ -1,16 +1,23 @@
-import React from "react";
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import ProtectedRoute from './contexts/ProtectedRoute';
 
 function App() {
-    const [like, setLike] = React.useState(0)
-    const incrementLike = () => {setLike(like + 1)}
-    const decrementLike = () => {setLike(like - 1)}
     return (
-        <div className="App">
-            <h1>{like}</h1>
-            <button onClick={incrementLike}>Повышение</button>
-            <button onClick={decrementLike}>Понижение</button>
-        </div>
-    );
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={
+                    <ProtectedRoute>
+                        <Home/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/signin" element={<SignIn/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App;
