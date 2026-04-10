@@ -1,9 +1,9 @@
 import {useState} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext';
 
 
-const SignIn = () => {
+const AdminSignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -15,7 +15,7 @@ const SignIn = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:8080/api/auth/sign-in', {
+            const response = await fetch('/api/auth/sign-in', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email: email, password: password}),
@@ -26,9 +26,8 @@ const SignIn = () => {
             if (!response.ok) {
                 setError(data.message || 'Ошибка входа!');
             }
-
             login(data.token);
-            navigate('/');
+            navigate('/admin/profile');
         } catch (err) {
             setError(err.message);
         }
@@ -40,7 +39,7 @@ const SignIn = () => {
             {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label> Имя пользователя или email: </label>
+                    <label> Введите email: </label>
                     <input
                         type="text"
                         value={email}
@@ -60,10 +59,10 @@ const SignIn = () => {
                     <button type="submit">Войти</button>
             </form>
             <p>
-                Нет аккаунта?! Ну и пошёл нахуй отсюда <Link to="/signup">Зарегистрироваться</Link>
+                Нет аккаунта?! Ну и пошёл нахуй отсюда!
             </p>
         </div>
     );
 };
 
-export default SignIn;
+export default AdminSignIn;
