@@ -1,0 +1,424 @@
+/* Общие цвета БНТУ (зелёный) */
+:root {
+    --bntu-green: #2a7f3e;
+    --bntu-green-light: #3c9e53;
+    --bntu-green-dark: #1e5e2e;
+    --gray-bg: #f5f5f5;
+    --border-color: #ddd;
+}
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Контейнер всей страницы */
+.admin-profile {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* ===== Шапка ===== */
+.admin-header {
+    background-color: var(--bntu-green);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-left .logo-placeholder {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.header-right .admin-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.admin-name {
+    font-weight: 500;
+    background: rgba(255,255,255,0.15);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+}
+
+.admin-role-badge {
+    background-color: #ffc107;
+    color: #1e5e2e;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.logout-button {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* ===== Вкладки ===== */
+.tabs {
+    display: flex;
+    background-color: white;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0 2rem;
+    gap: 0.5rem;
+}
+.tab {
+    background: none;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: #555;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+}
+.tab:hover {
+    color: var(--bntu-green);
+    background-color: #f0f0f0;
+}
+.tab.active {
+    color: var(--bntu-green);
+    border-bottom-color: var(--bntu-green);
+    font-weight: 600;
+}
+
+/* ===== Контент вкладок ===== */
+.tab-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+.placeholder-content {
+    text-align: center;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ===== Управление администраторами ===== */
+.admin-management {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+.management-header h2 {
+    margin: 0;
+    color: #1e5e2e;
+}
+.create-admin-btn {
+    background-color: var(--bntu-green);
+    border: none;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.create-admin-btn:hover {
+    background-color: var(--bntu-green-dark);
+}
+
+.actions-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.action-btn {
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: opacity 0.2s;
+}
+
+.action-btn.activate {
+    background-color: #28a745;
+    color: white;
+}
+
+.action-btn.deactivate {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-btn.change-password {
+    background-color: var(--bntu-green);
+    color: #ffffff;
+}
+
+.action-btn.change-password:hover {
+    background-color: var(--bntu-green-dark);
+
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Сообщения */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border-left: 5px solid #28a745;
+}
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border-left: 5px solid #dc3545;
+}
+
+.success-message, .error-message {
+    animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Форма поиска — адаптивная сетка */
+.search-form {
+    margin-bottom: 2rem;
+}
+.search-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+    align-items: end;
+}
+.search-fields input,
+.search-fields select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+.search-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.search-btn:hover {
+    background-color: var(--bntu-green-dark);
+}
+.search-btn:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Таблица результатов — адаптивная */
+.table-responsive {
+    overflow-x: auto;
+}
+.admins-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+.admins-table th,
+.admins-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.8rem;
+    text-align: left;
+    vertical-align: middle;
+}
+.admins-table th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+    color: #1e5e2e;
+}
+.admins-table tr.current-user {
+    background-color: #e8f5e9;
+    opacity: 0.9;
+}
+.role-super {
+    color: #b8860b;
+    font-weight: bold;
+}
+.role-standard {
+    color: #2a7f3e;
+    font-weight: bold;
+}
+.status-active {
+    color: #28a745;
+    font-weight: bold;
+}
+.status-inactive {
+    color: #dc3545;
+    font-weight: bold;
+}
+.action-btn {
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+.action-btn.activate {
+    background-color: #28a745;
+    color: white;
+}
+.action-btn.deactivate {
+    background-color: #dc3545;
+    color: white;
+}
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.self-hint {
+    font-size: 1rem;
+    color: #666;
+    font-style: italic;
+    margin-left: 0.3rem;
+}
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+/* ===== Адаптивность для мобильных устройств ===== */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.75rem 1rem;
+    }
+    .header-right .admin-info {
+        justify-content: center;
+    }
+    .tabs {
+        padding: 0 0.5rem;
+        justify-content: center;
+    }
+    .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    .tab-content {
+        padding: 1rem;
+    }
+    .management-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        text-align: center;
+    }
+    .search-fields {
+        grid-template-columns: 1fr;
+    }
+    /* Таблица превращается в карточки на очень маленьких экранах */
+    .admins-table thead {
+        display: none;
+    }
+    .admins-table tbody tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem;
+        background: white;
+    }
+    .admins-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 0.6rem 0;
+    }
+    .admins-table td:last-child {
+        border-bottom: none;
+    }
+    .admins-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        width: 40%;
+        color: #1e5e2e;
+    }
+    .actions-cell {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

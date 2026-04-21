@@ -1,0 +1,187 @@
+/* Используем те же цвета, что и в профиле администратора */
+:root {
+    --bntu-green: #2a7f3e;
+    --bntu-green-light: #3c9e53;
+    --bntu-green-dark: #1e5e2e;
+    --gray-bg: #f5f5f5;
+    --border-color: #e0e0e0;
+    --text-dark: #333;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+
+.signin-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    padding: 1rem;
+}
+
+.signin-card {
+    max-width: 420px;
+    width: 100%;
+    background: white;
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 2rem 1.8rem;
+    transition: transform 0.2s ease;
+}
+
+.signin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--bntu-green);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.signin-header h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.error-container {
+    min-height: 2.2rem;           /* убираем фиксированную высоту */
+    margin-bottom: 0.5rem;   /* небольшой отступ снизу */
+}
+
+.error-message {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 0.4rem 0.8rem;    /* уменьшенные внутренние отступы */
+    border-radius: 8px;
+    font-size: 0.85rem;        /* нормальный читаемый размер */
+    border-left: 3px solid #dc2626;
+    margin: 0;
+    animation: fadeIn 0.2s ease;
+}
+
+.signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #000000;
+    font-size: 1.3rem;
+    letter-spacing: 0.3px;
+}
+
+.form-group input {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    font-size: 1.3rem;
+    transition: all 0.2s;
+    background-color: #fefefe;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--bntu-green);
+    box-shadow: 0 0 0 3px rgba(42, 127, 62, 0.1);
+}
+
+.signin-button {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+}
+
+.signin-button:hover {
+    background-color: var(--bntu-green-dark);
+}
+
+.signin-button:active {
+    transform: scale(0.98);
+}
+
+.signin-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.signin-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.signin-footer .hint {
+    color: var(--bntu-green);
+    font-weight: 500;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px; /* место для кнопки */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--bntu-green);
+}
+
+.toggle-password svg {
+    display: block;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 480px) {
+    .signin-card {
+        padding: 1.5rem;
+    }
+    .signin-header h2 {
+        font-size: 1.3rem;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+    .form-group input {
+        padding: 0.7rem 0.9rem;
+    }
+}

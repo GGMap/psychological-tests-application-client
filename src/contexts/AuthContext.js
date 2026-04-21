@@ -10,21 +10,37 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const isTokenExpired = (token) => {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.exp * 1000 < Date.now();
+        } catch {
+            return true;
+        }
+    };
+
     useEffect(() => {
         const storedToken = localStorage.getItem('jwt_token');
         if (storedToken) {
-            try {
-                const decoded = jwtDecode(storedToken);
-                setToken(storedToken);
-                setUser({
-                    id: decoded.id,
-                    email: decoded.sub,
-                    role: decoded.role,
-                    isActive: decoded.is_active,
-                })
-            } catch (error) {
-                console.error('Ошибка декодирования токена:', error);
+            if (isTokenExpired(storedToken)) {
+                console.log('Токен истёк');
                 localStorage.removeItem('jwt_token');
+                setToken(null);
+                setUser(null);
+            } else {
+                try {
+                    const decoded = jwtDecode(storedToken);
+                    setToken(storedToken);
+                    setUser({
+                        id: decoded.id,
+                        email: decoded.sub,
+                        role: decoded.role,
+                        isActive: decoded.is_active,
+                    })
+                } catch (error) {
+                    console.error('Ошибка декодирования токена:', error);
+                    localStorage.removeItem('jwt_token');
+                }
             }
         }
         setLoading(false);

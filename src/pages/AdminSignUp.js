@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from "../contexts/AuthContext";
+import {API_URL} from "../config";
+import {handleUnauthorized} from "../contexts/authUtils";
 
 const AdminSignUp = () => {
     const [surname, setSurname] = useState('');
@@ -19,11 +21,11 @@ const AdminSignUp = () => {
 
 
         try {
-            const response = await fetch('/api/auth/sign-up', {
+            const response = await fetch(`${API_URL}/api/auth/sign-up`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Bearer': `${token}`,
+                    'Authorization': `Bearer ${token}`,
 
                 },
                 body: JSON.stringify({
@@ -35,6 +37,8 @@ const AdminSignUp = () => {
                     phoneNumber: phoneNumber
                 }),
             })
+
+            if (handleUnauthorized(response)) return;
 
             const data = await response.json();
 
