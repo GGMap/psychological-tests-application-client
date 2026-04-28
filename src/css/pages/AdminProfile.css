@@ -202,7 +202,7 @@ html, body, #root {
 }
 
 /* Сообщения */
-.success-message {
+.admin-profile .success-message {
     background-color: #d4edda;
     color: #155724;
     padding: 0.7rem;
@@ -210,7 +210,7 @@ html, body, #root {
     margin-bottom: 1rem;
     border-left: 5px solid #28a745;
 }
-.error-message {
+.admin-profile .error-message {
     background-color: #f8d7da;
     color: #721c24;
     padding: 0.7rem;
@@ -219,7 +219,7 @@ html, body, #root {
     border-left: 5px solid #dc3545;
 }
 
-.success-message, .error-message {
+.admin-profile .success-message, .admin-profile .error-message {
     animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
 }
 

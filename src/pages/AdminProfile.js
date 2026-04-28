@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AdminInfo from '../contexts/AdminInfo';
@@ -42,14 +42,6 @@ const AdminProfile = () => {
         }
     }, [message, error, clearMessages]);
 
-    useEffect(() => {
-        if (activeTab === 'admins') {
-            handleSearch().catch(err => {
-                console.error('Ошибка при загрузке администраторов:', err);
-            });
-        }
-    }, [isSuperAdmin, activeTab]);
-
     const canManageAdmin = (targetAdmin) => {
         if (targetAdmin.id === user?.id) {
             return { allowed: false, reason: 'Нельзя управлять самим собой' };
@@ -87,8 +79,8 @@ const AdminProfile = () => {
         setSearchParams(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSearch = async (e) => {
-        if (e && e.preventDefault) {
+    const handleSearch = useCallback(async (e = null) => {
+        if (e && typeof e.preventDefault === 'function') {
             e.preventDefault();
         }
         setSearchLoading(true);
@@ -106,7 +98,15 @@ const AdminProfile = () => {
         } finally {
             setSearchLoading(false);
         }
-    };
+    }, [searchParams, token]);
+
+    useEffect(() => {
+        if (activeTab === 'admins') {
+            handleSearch().catch(err => {
+                console.error('Ошибка при загрузке администраторов:', err);
+            });
+        }
+    }, [isSuperAdmin, activeTab, handleSearch]);
 
     const handleCreateAdmin = () => {
         navigate('/admin/signup');

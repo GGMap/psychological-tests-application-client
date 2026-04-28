@@ -50,15 +50,14 @@
 
 .error-container {
     min-height: 2.2rem;           /* убираем фиксированную высоту */
-    margin-bottom: 0.5rem;   /* небольшой отступ снизу */
 }
 
 .error-message {
     background-color: #fee2e2;
     color: #b91c1c;
-    padding: 0.4rem 0.8rem;    /* уменьшенные внутренние отступы */
+    padding: 0.5rem 0.5rem;    /* уменьшенные внутренние отступы */
     border-radius: 8px;
-    font-size: 0.85rem;        /* нормальный читаемый размер */
+    font-size: 1rem;        /* нормальный читаемый размер */
     border-left: 3px solid #dc2626;
     margin: 0;
     animation: fadeIn 0.2s ease;
@@ -67,7 +66,7 @@
 .signin-form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
 }
 
 .form-group {
@@ -108,7 +107,6 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
-    margin-top: 0.5rem;
 }
 
 .signin-button:hover {
