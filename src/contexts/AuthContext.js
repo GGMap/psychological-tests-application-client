@@ -58,7 +58,6 @@ export const AuthProvider = ({children}) => {
                 role: decoded.role,
                 isActive: decoded.is_active,
             })
-            console.log(decoded)
         } catch (error) {
             console.error('Ошибка декодирования токена:', error);
         }

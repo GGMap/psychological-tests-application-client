@@ -1,10 +1,15 @@
-/* Общие цвета БНТУ (зелёный) */
 :root {
-    --bntu-green: #2a7f3e;
-    --bntu-green-light: #3c9e53;
-    --bntu-green-dark: #1e5e2e;
-    --gray-bg: #f5f5f5;
+    --text-dark: #333333;
+    --text-light: #666666;
     --border-color: #ddd;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --gray-light: #f5f5f5;
+    --gray-medium: #e0e0e0;
+    --gray-hover: #e8e8e8;
+    --bntu-green: #2a7f3e;
+    --bntu-green-dark: #1e5e2e;
+    --bntu-blue: #005ecd;
+    --bntu-blue-dark: #0149a1;
 }
 
 html, body, #root {
@@ -13,36 +18,31 @@ html, body, #root {
     padding: 0;
 }
 
-/* Контейнер всей страницы */
 .admin-profile {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f9f9f9;
+    background-color: #f5f7fa;
     font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-/* ===== Шапка ===== */
+/* ===== Шапка (белая, как на главной) ===== */
 .admin-header {
-    background-color: var(--bntu-green);
-    color: white;
+    background-color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    padding: 0 2rem;
+    margin: 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 70px;
 }
 
-.header-left .logo-placeholder {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: rgba(255,255,255,0.2);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    min-width: 120px;
-    text-align: center;
+.header-left .logo-image {
+    height: 65px;
+    width: auto;
+    display: block;
+    margin-right: 2rem;
 }
 
 .header-right .admin-info {
@@ -54,60 +54,72 @@ html, body, #root {
 }
 
 .admin-name {
-    font-weight: 500;
-    background: rgba(255,255,255,0.15);
+    font-weight: 600;
+    background: var(--gray-light);
+    color: black;
     padding: 0.3rem 0.8rem;
-    border-radius: 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
 }
 
 .admin-role-badge {
     background-color: #ffc107;
-    color: #1e5e2e;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
+    color: black;
+    padding: 0.3rem 0.5rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .logout-button {
-    background-color: #dc3545;
-    border: none;
-    color: white;
+    background-color: #e43030;
+    border: 1px solid var(--border-color);
+    color: black;
     padding: 0.4rem 1rem;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-.logout-button:hover {
-    background-color: #c82333;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-size: 1.1rem;
 }
 
-/* ===== Вкладки ===== */
+.logout-button:hover {
+    background-color: var(--gray-medium);
+    border-color: var(--gray-medium);
+}
+
+
 .tabs {
     display: flex;
-    background-color: white;
-    border-bottom: 2px solid var(--border-color);
-    padding: 0 2rem;
+    justify-content: flex-start;
     gap: 0.5rem;
+    align-items: stretch;
+    margin: 0;
+    flex: 1;
 }
+
 .tab {
     background: none;
     border: none;
     padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     cursor: pointer;
     font-weight: 500;
-    color: #555;
+    color: var(--text-dark);
     transition: all 0.2s;
     border-bottom: 3px solid transparent;
+    height: auto;
 }
+
 .tab:hover {
-    color: var(--bntu-green);
-    background-color: #f0f0f0;
+    background-color: var(--gray-hover);
 }
+
 .tab.active {
-    color: var(--bntu-green);
     border-bottom-color: var(--bntu-green);
     font-weight: 600;
 }
@@ -123,7 +135,7 @@ html, body, #root {
     background: white;
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
 }
 
 /* ===== Управление администраторами ===== */
@@ -131,7 +143,7 @@ html, body, #root {
     background: white;
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
 }
 
 .management-header {
@@ -141,10 +153,12 @@ html, body, #root {
     flex-wrap: wrap;
     margin-bottom: 1.5rem;
 }
+
 .management-header h2 {
     margin: 0;
-    color: #1e5e2e;
+    color: var(--text-dark);
 }
+
 .create-admin-btn {
     background-color: var(--bntu-green);
     border: none;
@@ -155,50 +169,9 @@ html, body, #root {
     cursor: pointer;
     transition: background 0.2s;
 }
+
 .create-admin-btn:hover {
     background-color: var(--bntu-green-dark);
-}
-
-.actions-cell {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.action-btn {
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.8rem;
-    transition: opacity 0.2s;
-}
-
-.action-btn.activate {
-    background-color: #28a745;
-    color: white;
-}
-
-.action-btn.deactivate {
-    background-color: #dc3545;
-    color: white;
-}
-
-.action-btn.change-password {
-    background-color: var(--bntu-green);
-    color: #ffffff;
-}
-
-.action-btn.change-password:hover {
-    background-color: var(--bntu-green-dark);
-
-}
-
-.action-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 
 /* Сообщения */
@@ -210,6 +183,7 @@ html, body, #root {
     margin-bottom: 1rem;
     border-left: 5px solid #28a745;
 }
+
 .admin-profile .error-message {
     background-color: #f8d7da;
     color: #721c24;
@@ -219,7 +193,8 @@ html, body, #root {
     border-left: 5px solid #dc3545;
 }
 
-.admin-profile .success-message, .admin-profile .error-message {
+.admin-profile .success-message,
+.admin-profile .error-message {
     animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
 }
 
@@ -241,16 +216,18 @@ html, body, #root {
     }
 }
 
-/* Форма поиска — адаптивная сетка */
+/* Форма поиска */
 .search-form {
     margin-bottom: 2rem;
 }
+
 .search-fields {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.5rem;
     align-items: end;
 }
+
 .search-fields input,
 .search-fields select {
     width: 100%;
@@ -260,6 +237,7 @@ html, body, #root {
     font-size: 0.9rem;
     box-sizing: border-box;
 }
+
 .search-btn {
     background-color: var(--bntu-green);
     color: white;
@@ -270,23 +248,27 @@ html, body, #root {
     font-weight: bold;
     transition: background 0.2s;
 }
+
 .search-btn:hover {
     background-color: var(--bntu-green-dark);
 }
+
 .search-btn:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
 
-/* Таблица результатов — адаптивная */
+/* Таблица администраторов */
 .table-responsive {
     overflow-x: auto;
 }
+
 .admins-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
 }
+
 .admins-table th,
 .admins-table td {
     border: 1px solid var(--border-color);
@@ -294,31 +276,45 @@ html, body, #root {
     text-align: left;
     vertical-align: middle;
 }
+
 .admins-table th {
     background-color: #f2f2f2;
     font-weight: 600;
-    color: #1e5e2e;
+    color: var(--text-dark);
 }
+
 .admins-table tr.current-user {
     background-color: #e8f5e9;
     opacity: 0.9;
 }
+
 .role-super {
     color: #b8860b;
     font-weight: bold;
 }
+
 .role-standard {
     color: #2a7f3e;
     font-weight: bold;
 }
+
 .status-active {
     color: #28a745;
     font-weight: bold;
 }
+
 .status-inactive {
     color: #dc3545;
     font-weight: bold;
 }
+
+.actions-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .action-btn {
     border: none;
     padding: 0.4rem 1rem;
@@ -327,24 +323,47 @@ html, body, #root {
     font-weight: 500;
     transition: opacity 0.2s;
 }
+
 .action-btn.activate {
     background-color: #28a745;
     color: white;
 }
+
 .action-btn.deactivate {
     background-color: #dc3545;
     color: white;
 }
+
+.action-btn.change-password {
+    background-color: var(--bntu-blue);
+    color: white;
+}
+
+.action-btn.change-password:hover {
+    background-color: var(--bntu-blue-dark);
+}
+
+.action-btn.edit-profile {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.action-btn.edit-profile:hover {
+    background-color: #138496;
+}
+
 .action-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
 .self-hint {
     font-size: 1rem;
     color: #666;
     font-style: italic;
     margin-left: 0.3rem;
 }
+
 .no-results {
     text-align: center;
     padding: 2rem;
@@ -353,22 +372,143 @@ html, body, #root {
     border-radius: 12px;
 }
 
-/* ===== Адаптивность для мобильных устройств ===== */
+/* ===== Управление тестами ===== */
+.admin-tests-container {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.admin-search-bar {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.admin-search-bar input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 40px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.admin-search-bar input:focus {
+    outline: none;
+    border-color: var(--bntu-green);
+    box-shadow: 0 0 0 2px rgba(42,127,62,0.1);
+}
+
+.admin-tests-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-tests-table th,
+.admin-tests-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
+
+.admin-tests-table th {
+    background-color: #f2f2f2;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.admin-test-status.active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.admin-test-status.inactive {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.admin-test-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.admin-test-toggle-btn {
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.admin-test-toggle-btn.open {
+    background-color: #28a745;
+    color: white;
+}
+
+.admin-test-toggle-btn.close {
+    background-color: #dc3545;
+    color: white;
+}
+
+.admin-test-edit-btn {
+    background-color: var(--bntu-blue);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.admin-test-edit-btn:hover {
+    background-color: var(--bntu-blue-dark);
+}
+
+.admin-test-start-btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.admin-test-start-btn:hover {
+    background-color: #138496;
+}
+
+.admin-loading,
+.admin-error-message,
+.admin-no-tests {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.admin-error-message {
+    color: #dc3545;
+}
+
+/* ===== Адаптивность ===== */
 @media (max-width: 768px) {
     .admin-header {
         flex-direction: column;
-        text-align: center;
+        height: auto;
         padding: 0.75rem 1rem;
     }
     .header-right .admin-info {
         justify-content: center;
     }
     .tabs {
-        padding: 0 0.5rem;
         justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
     }
     .tab {
-        padding: 0.6rem 1rem;
+        padding: 0.4rem 1rem;
         font-size: 0.9rem;
     }
     .tab-content {
@@ -383,7 +523,7 @@ html, body, #root {
     .search-fields {
         grid-template-columns: 1fr;
     }
-    /* Таблица превращается в карточки на очень маленьких экранах */
+    /* Таблица администраторов в карточки */
     .admins-table thead {
         display: none;
     }
@@ -416,7 +556,6 @@ html, body, #root {
         flex-direction: column;
         align-items: stretch;
     }
-
     .action-btn {
         width: 100%;
         text-align: center;

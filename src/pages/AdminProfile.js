@@ -1,19 +1,23 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import {useNavigate} from 'react-router-dom';
+import {useAuth} from '../contexts/AuthContext';
+import {useLocation} from 'react-router-dom';
 import AdminInfo from '../contexts/AdminInfo';
-import { useAdminActions } from '../hooks/useAdminActions';
-import { adminService } from '../services/adminService';
+import {useAdminActions} from '../hooks/useAdminActions';
+import {adminService} from '../services/adminService';
 import '../css/pages/AdminProfile.css';
-import '../css/components/ChangePasswordModal.css';
-import ChangePasswordModal from "../components/ChangePasswordModal";
+import '../css/components/EditProfileModal.css';
+import EditProfileModal from "../components/EditProfileModal";
+import {testsService} from '../services/testsService';
+import AdminResults from './AdminResults';
+import LogoBNTU from '../logo/Logo_BNTU.png';
 
 const AdminProfile = () => {
-    const { logout, user, token, isSuperAdmin } = useAuth();
+    const {logout, user, token, isSuperAdmin} = useAuth();
     const navigate = useNavigate();
-    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-    const [passwordChangeTarget, setPasswordChangeTarget] = useState(null);
-    const [activeTab, setActiveTab] = useState('admins');
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [profileTarget, setProfileTarget] = useState(null);
+    const [activeTab, setActiveTab] = useState('results');
     const [searchParams, setSearchParams] = useState({
         sname: '',
         fname: '',
@@ -32,6 +36,11 @@ const AdminProfile = () => {
         error,
         clearMessages
     } = useAdminActions(token, () => handleSearch(new Event('submit')));
+    const [adminTests, setAdminTests] = useState([]);
+    const [testsLoading, setTestsLoading] = useState(false);
+    const [testsError, setTestsError] = useState('');
+    const [testSearchTerm, setTestSearchTerm] = useState('');
+    const location = useLocation();
 
     useEffect(() => {
         if (message || error) {
@@ -42,31 +51,35 @@ const AdminProfile = () => {
         }
     }, [message, error, clearMessages]);
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const tab = params.get('tab');
+        if (tab === 'tests') {
+            setActiveTab('tests');
+        }
+    }, [location.search]);
+
     const canManageAdmin = (targetAdmin) => {
         if (targetAdmin.id === user?.id) {
-            return { allowed: false, reason: 'Нельзя управлять самим собой' };
+            return {allowed: false, reason: 'Нельзя управлять самим собой'};
         }
         if (!isSuperAdmin) {
-            return { allowed: false, reason: 'Только супер-администратор может управлять другими администраторами' };
+            return {allowed: false, reason: 'Только супер-администратор может управлять другими администраторами'};
         }
         if (targetAdmin.role === 'SUPER') {
-            return { allowed: false, reason: 'Супер-администратор не может управлять другими супер-администраторами' };
+            return {allowed: false, reason: 'Супер-администратор не может управлять другими супер-администраторами'};
         }
-        return { allowed: true, reason: '' };
+        return {allowed: true, reason: ''};
     };
 
-    const handleOpenSelfPasswordModal = () => {
-        setPasswordChangeTarget(null);
-        setIsPasswordModalOpen(true);
+    const handleOpenSelfProfileModal = () => {
+        setProfileTarget(null);
+        setIsProfileModalOpen(true);
     };
 
-    const handleOpenAdminPasswordModal = (adminId, adminFullName) => {
-        setPasswordChangeTarget({ id: adminId, name: adminFullName });
-        setIsPasswordModalOpen(true);
-    };
-
-    const handlePasswordChangeSuccess = () => {
-        alert('Пароль успешно изменён');
+    const handleOpenAdminProfileModal = (adminId, adminName) => {
+        setProfileTarget({id: adminId, name: adminName});
+        setIsProfileModalOpen(true);
     };
 
     const handleLogout = () => {
@@ -75,8 +88,8 @@ const AdminProfile = () => {
     };
 
     const handleSearchInputChange = (e) => {
-        const { name, value } = e.target;
-        setSearchParams(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setSearchParams(prev => ({...prev, [name]: value}));
     };
 
     const handleSearch = useCallback(async (e = null) => {
@@ -100,6 +113,39 @@ const AdminProfile = () => {
         }
     }, [searchParams, token]);
 
+    const fetchAllTests = useCallback(async () => {
+        setTestsLoading(true);
+        setTestsError('');
+        try {
+            const data = await testsService.searchAllTests({}, token);
+            const sortedTests = [...data].sort((a, b) =>
+                (a.name || '').localeCompare(b.name || '')
+            );
+            setAdminTests(sortedTests);
+        } catch (err) {
+            setTestsError(err.message);
+        } finally {
+            setTestsLoading(false);
+        }
+    }, [token]);
+
+    const handleToggleTestStatus = async (testId, currentStatus) => {
+        try {
+            await testsService.updateTestStatus(testId, !currentStatus, token);
+            await fetchAllTests();
+        } catch (err) {
+            console.log(`Ошибка: ${err.message}`);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'tests') {
+            fetchAllTests().catch(err => {
+                console.error('Ошибка загрузки тестов:', err);
+            });
+        }
+    }, [activeTab, fetchAllTests]);
+
     useEffect(() => {
         if (activeTab === 'admins') {
             handleSearch().catch(err => {
@@ -114,63 +160,108 @@ const AdminProfile = () => {
 
     return (
         <div className="admin-profile">
-            {/* Верхняя зелёная полоса */}
             <header className="admin-header">
                 <div className="header-left">
-                    <div className="logo-placeholder">Логотип БНТУ</div>
+                    <img src={LogoBNTU} alt="Логотип БНТУ" className="logo-image"/>
                 </div>
-                <div className="header-right">
-                    <div className="admin-info">
-                        <span className="admin-name">
-                            <AdminInfo userId={user?.id} token={token} />
-                        </span>
-                        <span className="admin-role-badge">
-                            {isSuperAdmin ? 'Супер-админ' : 'Администратор'}
-                        </span>
-                        <button onClick={handleLogout} className="logout-button">Выйти</button>
-                    </div>
-                </div>
-            </header>
-
-            {/* Вкладки */}
-            <div className="tabs">
-                <button
-                    className={`tab ${activeTab === 'tests' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('tests')}
-                >
-                    Тесты
-                </button>
-                <button
-                    className={`tab ${activeTab === 'results' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('results')}
-                >
-                    Результаты
-                </button>
-                {isSuperAdmin && (
+                <div className="tabs">
+                    <button
+                        className={`tab ${activeTab === 'tests' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('tests')}
+                    >
+                        Тесты
+                    </button>
+                    <button
+                        className={`tab ${activeTab === 'results' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('results')}
+                    >
+                        Результаты
+                    </button>
                     <button
                         className={`tab ${activeTab === 'admins' ? 'active' : ''}`}
                         onClick={() => setActiveTab('admins')}
                     >
                         Администраторы
                     </button>
-                )}
-            </div>
+                </div>
 
+                    <div className="header-right">
+                        <div className="admin-info">
+                        <span className="admin-name">
+                            <AdminInfo userId={user?.id} token={token}/>
+                        </span>
+                            <span className="admin-role-badge">
+                            {isSuperAdmin ? 'Супер-админ' : 'Администратор'}
+                        </span>
+                            <button onClick={handleLogout} className="logout-button">Выйти</button>
+                        </div>
+                    </div>
+
+            </header>
             {/* Контент вкладок */}
             <div className="tab-content">
                 {activeTab === 'tests' && (
-                    <div className="placeholder-content">
-                        <h2>Управление тестами</h2>
-                        <p>Здесь будет функционал для создания/редактирования тестов (заглушка).</p>
+                    <div className="admin-tests-container">
+                        <div className="admin-search-bar">
+                            <input
+                                type="text"
+                                placeholder="Поиск по названию..."
+                                value={testSearchTerm}
+                                onChange={(e) => setTestSearchTerm(e.target.value)}
+                            />
+                        </div>
+
+                        {testsLoading && <div className="admin-loading">Загрузка тестов...</div>}
+                        {testsError && <div className="admin-error-message">{testsError}</div>}
+
+                        {!testsLoading && !testsError && (
+                            <table className="admin-tests-table">
+                                <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {adminTests
+                                    .filter(test => test.name?.toLowerCase().includes(testSearchTerm.toLowerCase()))
+                                    .map(test => (
+                                        <tr key={test.id}>
+                                            <td className="admin-test-name">{test.name}</td>
+                                            <td className={`admin-test-status ${test.isActive ? 'active' : 'inactive'}`}>
+                                                {test.isActive ? 'Активен' : 'Неактивен'}
+                                            </td>
+                                            <td className="admin-test-actions">
+                                                <button
+                                                    className={`admin-test-toggle-btn ${test.isActive ? 'close' : 'open'}`}
+                                                    onClick={() => handleToggleTestStatus(test.id, test.isActive)}
+                                                >
+                                                    {test.isActive ? 'Закрыть' : 'Открыть'}
+                                                </button>
+                                                <button
+                                                    className="admin-test-edit-btn"
+                                                    onClick={() => navigate(`/admin/test/${test.id}`)}
+                                                >
+                                                    Редактировать
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                {adminTests.filter(t => t.name?.toLowerCase().includes(testSearchTerm.toLowerCase())).length === 0 && (
+                                    <tr>
+                                        <td colSpan="3" className="admin-no-tests">Тесты не найдены</td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 )}
                 {activeTab === 'results' && (
-                    <div className="placeholder-content">
-                        <h2>Результаты тестирования</h2>
-                        <p>Здесь будет отображаться статистика и результаты пользователей (заглушка).</p>
-                    </div>
+                    <AdminResults />
                 )}
-                {activeTab === 'admins' && isSuperAdmin && (
+                {activeTab === 'admins' && (
                     <div className="admin-management">
                         <div className="management-header">
                             <h2>Управление администраторами</h2>
@@ -261,7 +352,7 @@ const AdminProfile = () => {
                                     </thead>
                                     <tbody>
                                     {searchResults.map(admin => {
-                                        const { allowed, reason } = canManageAdmin(admin);
+                                        const {allowed, reason} = canManageAdmin(admin);
                                         const fullName = [admin.sname, admin.fname, admin.mname].filter(p => p).join(' ') || admin.email;
 
                                         return (
@@ -274,25 +365,27 @@ const AdminProfile = () => {
                                                 <td data-label="Роль" className={`role-${admin.role?.toLowerCase()}`}>
                                                     {admin.role === 'SUPER' ? 'Супер-админ' : 'Админ'}
                                                 </td>
-                                                <td data-label="Статус" className={`status-${admin.isActive ? 'active' : 'inactive'}`}>
+                                                <td data-label="Статус"
+                                                    className={`status-${admin.isActive ? 'active' : 'inactive'}`}>
                                                     {admin.isActive ? 'Активен' : 'Неактивен'}
                                                 </td>
                                                 <td data-label="Действия" className="actions-cell">
 
                                                     {/* Кнопка смены пароля для текущего пользователя */}
-                                                    {isSuperAdmin && admin.id === user?.id && (
-                                                        <button onClick={handleOpenSelfPasswordModal} className="action-btn change-password">
-                                                            Сменить пароль
+                                                    {admin.id === user?.id && (
+                                                        <button onClick={handleOpenSelfProfileModal}
+                                                                className="action-btn change-password">
+                                                            Редактировать
                                                         </button>
                                                     )}
 
                                                     {/* Кнопка смены пароля для супер-админа (для других STANDARD) */}
                                                     {isSuperAdmin && admin.id !== user?.id && admin.role !== 'SUPER' && (
                                                         <button
-                                                            onClick={() => handleOpenAdminPasswordModal(admin.id, fullName)}
+                                                            onClick={() => handleOpenAdminProfileModal(admin.id, fullName)}
                                                             className="action-btn change-password"
                                                         >
-                                                            Сменить пароль
+                                                            Редактировать
                                                         </button>
                                                     )}
 
@@ -334,14 +427,15 @@ const AdminProfile = () => {
             </div>
 
             {/* Модальное окно смены пароля */}
-            <ChangePasswordModal
-                isOpen={isPasswordModalOpen}
-                onClose={() => setIsPasswordModalOpen(false)}
-                userId={passwordChangeTarget?.id}
-                userName={passwordChangeTarget?.name}
+            <EditProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+                userId={profileTarget?.id}
                 currentAdminId={user?.id}
                 token={token}
-                onSuccess={handlePasswordChangeSuccess}
+                onSuccess={() => {
+                    handleSearch(new Event('submit')).then();
+                }}
             />
         </div>
     );

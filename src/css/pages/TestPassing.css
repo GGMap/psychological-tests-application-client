@@ -1,0 +1,150 @@
+:root {
+    --text-dark: #333333;
+    --text-light: #666666;
+    --border-color: #ddd;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --gray-light: #f5f5f5;
+    --gray-hover: #e8e8e8;
+    --bntu-green: #2a7f3e;
+    --bntu-green-dark: #1e5e2e;
+}
+
+.test-passing-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.test-passing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.test-passing-header h2 {
+    color: var(--text-dark);
+}
+
+.test-passing-questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.test-question-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.test-question-header {
+    margin-bottom: 0.5rem;
+}
+
+.test-question-number {
+    font-weight: bold;
+    color: var(--bntu-green);
+    font-size: 1.1rem;
+}
+
+.test-question-text {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.test-options-list {
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.test-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.test-option:hover {
+    background-color: var(--gray-hover);
+}
+
+.test-option input {
+    margin: 0;
+}
+
+.test-submit-section {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.submit-all-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.submit-all-btn:hover {
+    background-color: #218838;
+}
+
+.submit-all-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.test-passing-loading,
+.test-passing-error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+/* Результаты */
+.test-results-container {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.result-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.back-home-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .test-passing-container {
+        padding: 0.5rem;
+    }
+    .test-question-card {
+        padding: 1rem;
+    }
+}

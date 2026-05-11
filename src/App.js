@@ -4,6 +4,8 @@ import AdminSignIn from './pages/AdminSignIn';
 import AdminSignUp from './pages/AdminSignUp';
 import ProtectedRoute from './contexts/ProtectedRoute';
 import AdminProfile from "./pages/AdminProfile";
+import TestView from "./pages/TestView";
+import TestPassing from './pages/TestPassing';
 
 function App() {
     return (<BrowserRouter>
@@ -20,6 +22,12 @@ function App() {
                 <AdminSignUp/>
                 </ProtectedRoute>
             }/>
+            <Route path="/admin/test/:testId" element={
+                <ProtectedRoute>
+                    <TestView />
+                </ProtectedRoute>
+            } />
+            <Route path="/test/:testId" element={<TestPassing />} />
         </Routes>
     </BrowserRouter>)
 }

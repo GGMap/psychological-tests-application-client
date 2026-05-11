@@ -1,0 +1,152 @@
+.admin-results-container {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.admin-results-search-form {
+    margin-bottom: 1.5rem;
+}
+
+.admin-results-form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-results-form-group {
+    flex: 1;
+    min-width: 0;
+    font-size: 1.1rem;
+}
+
+.admin-results-form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.admin-results-form-group select,
+.admin-results-form-group input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+}
+
+.admin-results-search-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.admin-results-attempts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+.admin-results-attempts-table th,
+.admin-results-attempts-table td {
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.admin-results-attempts-table td::before {
+    content: none !important;
+}
+
+.admin-results-details-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.admin-results-attempt-details {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 16px;
+}
+
+.admin-results-scores-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.admin-results-score-card {
+    background: white;
+    border-radius: 12px;
+    padding: 0.8rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-results-scale-name {
+    font-weight: bold;
+    color: var(--bntu-green);
+}
+
+.admin-results-score-value {
+    font-size: 1.1rem;
+    margin: 0.3rem 0;
+}
+
+.admin-results-score-interpretation {
+    color: #666;
+}
+
+.admin-results-answers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-results-answer-item {
+    background: white;
+    border-radius: 12px;
+    padding: 0.8rem;
+}
+
+.admin-results-question-text {
+    font-weight: 500;
+}
+
+.admin-results-option-text {
+    color: #555;
+    margin-top: 0.3rem;
+}
+
+.admin-results-close-details-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.admin-results-error {
+    color: #dc3545;
+    padding: 0.5rem;
+}
+
+.admin-results-loading {
+    text-align: center;
+    padding: 1rem;
+}

@@ -99,6 +99,17 @@
     transform: none;
 }
 
+.password-wrapper-signup {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper-signup input {
+    width: 100%;
+    padding-right: 40px;
+}
+
 @media (max-width: 480px) {
     .signup-card {
         padding: 1.5rem;

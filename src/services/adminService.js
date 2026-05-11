@@ -56,5 +56,42 @@ export const adminService = {
             throw new Error(data.message || 'Ошибка поиска');
         }
         return data;
-    }
+    },
+
+    // Получение данных администратора по ID
+    getAdminById: async (adminId, token) => {
+        const response = await fetch(`${API_URL}/admins/${adminId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Ошибка загрузки данных администратора');
+        }
+        return response.json();
+    },
+
+    // Обновление персональных данных (ФИО, телефон)
+    updateAdminProfile: async (adminId, profileData, token) => {
+        // profileData: { sname, fname, mname, phoneNumber }
+        const response = await fetch(`${API_URL}/admins`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                id: adminId,
+                ...profileData,
+            }),
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Ошибка обновления профиля');
+        }
+        if (response.status === 204) return true;
+        return response.json();
+    },
 };

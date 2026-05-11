@@ -1,0 +1,52 @@
+.registration-modal * {
+    box-sizing: border-box;
+}
+
+.registration-modal {
+    max-width: 600px;
+    width: 90%;
+}
+
+.registration-modal .form-row-registration-modal {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.registration-modal .form-group {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0.75rem;
+}
+
+.registration-modal .modal-buttons {
+    margin-top: 0.5rem;
+}
+
+.registration-modal input,
+.registration-modal select {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-family: inherit;
+}
+
+.registration-modal input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.registration-modal input[type="number"]::-webkit-inner-spin-button,
+.registration-modal input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.registration-modal .modal-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 0.6rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}

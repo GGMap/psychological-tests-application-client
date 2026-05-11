@@ -36,8 +36,7 @@
 .logo {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--bntu-green);
-    margin-bottom: 0.5rem;
+    color: black;
     letter-spacing: 1px;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .error-container {
-    min-height: 2.2rem;           /* убираем фиксированную высоту */
+    min-height: 2.2rem;
 }
 
 .error-message {
@@ -128,11 +127,6 @@
     margin-top: 2rem;
     font-size: 0.85rem;
     color: #6c757d;
-}
-
-.signin-footer .hint {
-    color: var(--bntu-green);
-    font-weight: 500;
 }
 
 .password-wrapper {

@@ -1,44 +1,89 @@
-/* Общие цвета БНТУ (те же, что и в AdminProfile) */
+/* ===== Общие цвета ===== */
 :root {
-    --bntu-green: #2a7f3e;
-    --bntu-green-light: #3c9e53;
-    --bntu-green-dark: #1e5e2e;
-    --gray-bg: #f5f5f5;
+    --text-dark: #333333;
+    --text-light: #666666;
     --border-color: #ddd;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --gray-light: #f5f5f5;
+    --gray-medium: #e0e0e0;
+    --gray-hover: #e8e8e8;
+    --bntu-green: #2a7f3e;   /* используется только для кнопки "Пройти тест" */
+    --bntu-green-dark: #1e5e2e;
 }
 
 .home-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f9f9f9;
-    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background-color: #f5f7fa;
 }
 
-/* ===== Шапка ===== */
+/* ===== Шапка с вкладками (белый фон) ===== */
 .home-header {
-    background-color: var(--bntu-green);
-    color: white;
+    background-color: white;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 70px;
 }
 
-.header-left .logo-placeholder {
+/* Левая часть — логотип */
+.home-header-left {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    flex-shrink: 0;
+}
+
+.logo-image {
+    height: 65px;
+    width: auto;
+    display: block;
+}
+
+/* Центральная часть — контейнер вкладок (прижат к левому краю) */
+.home-header-center {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.home-tab {
+    background: none;
+    border: none;
+    padding: 0.8rem 1.5rem;
     font-size: 1.2rem;
-    font-weight: bold;
-    background-color: rgba(255,255,255,0.2);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    min-width: 120px;
-    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    height: auto;
 }
 
-.header-right .admin-info {
+.home-tab:hover {
+    background-color: var(--gray-hover);
+}
+
+.home-tab-active {
+    border-bottom-color: var(--bntu-green);
+    font-weight: 600;
+}
+
+/* Правая часть — информация и кнопки (прижата к правому краю) */
+.home-header-right {
+    display: flex;
+    align-items: center;
+    padding-right: 2rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.home-header-right{
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -46,100 +91,201 @@
     justify-content: flex-end;
 }
 
-.admin-name {
-    font-weight: 500;
-    background: rgba(255,255,255,0.15);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-}
-
-.admin-role-badge {
-    background-color: #ffc107;
-    color: #1e5e2e;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.login-button,
-.profile-button {
-    background-color: #ffc107;
-    border: none;
-    color: #1e5e2e;
+.home-login-button,
+.home-profile-button {
+    background-color: var(--bntu-green-light);
+    border: 1px solid var(--border-color);
+    color: white;
     padding: 0.4rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    height: 60%;
+}
+
+.home-login-button:hover,
+.home-profile-button:hover {
+    background-color: var(--bntu-green);
+    border-color: var(--gray-medium);
+}
+
+/* ===== Контент ===== */
+.home-tab-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* Контейнер для тестов */
+.home-tests-container {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+/* Поле поиска */
+.home-search-bar {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+.home-search-bar input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+.home-search-bar input:focus {
+    outline: none;
+    border-color: var(--gray-medium);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+/* Таблица тестов */
+.home-tests-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.home-tests-table td {
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.home-tests-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.home-test-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.home-test-name {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    text-align: left;
+    flex: 1;
+}
+
+.home-test-action {
+    text-align: right;
+    width: 150px;
+}
+
+.home-test-button {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
     border-radius: 30px;
     cursor: pointer;
     font-weight: bold;
     transition: background 0.2s;
-}
-.login-button:hover,
-.profile-button:hover {
-    background-color: #e0a800;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-/* ===== Вкладки ===== */
-.tabs {
-    display: flex;
-    background-color: white;
-    border-bottom: 2px solid var(--border-color);
-    padding: 0 2rem;
-    gap: 0.5rem;
-}
-.tab {
-    background: none;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    color: #555;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
-}
-.tab:hover {
-    color: var(--bntu-green);
-    background-color: #f0f0f0;
-}
-.tab.active {
-    color: var(--bntu-green);
-    border-bottom-color: var(--bntu-green);
-    font-weight: 600;
+.home-test-button:hover {
+    background-color: var(--bntu-green-dark);
 }
 
-/* ===== Контент ===== */
-.tab-content {
-    flex: 1;
-    padding: 2rem;
-}
-.placeholder-content {
+/* Сообщения */
+.home-loading,
+.home-error-message,
+.home-no-tests {
     text-align: center;
-    background: white;
-    border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: var(--text-light);
+}
+.home-error-message {
+    color: #dc3545;
+}
+
+.home-placeholder-content {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
 }
 
 /* ===== Адаптивность ===== */
 @media (max-width: 768px) {
     .home-header {
         flex-direction: column;
-        text-align: center;
-        padding: 0.75rem 1rem;
+        height: auto;
     }
-    .header-right .admin-info {
+    .home-header-left,
+    .home-header-center,
+    .home-header-right {
+        padding: 0.5rem 1rem;
+        justify-content: center;
+        margin-left: 0;
+    }
+    .home-header-center {
+        order: 2;
         justify-content: center;
     }
-    .tabs {
-        padding: 0 0.5rem;
+    .home-header-left {
+        order: 1;
         justify-content: center;
-        flex-wrap: wrap;
     }
-    .tab {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
+    .home-header-right {
+        order: 3;
+        justify-content: center;
     }
-    .tab-content {
+    .home-tab {
+        height: auto;
+        padding: 0.6rem 1.2rem;
+    }
+    .home-tab-content {
         padding: 1rem;
+    }
+    .home-tests-container {
+        padding: 1rem;
+    }
+
+    .home-test-cell {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .home-test-name {
+        flex: 1;
+    }
+
+    /* Таблица превращается в карточки */
+    .home-tests-table,
+    .home-tests-table tbody,
+    .home-tests-table tr,
+    .home-tests-table td {
+        display: block;
+        width: 100%;
+    }
+    .home-tests-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem;
+    }
+    .home-tests-table td {
+        border: none;
+        padding: 0.4rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .home-test-name {
+        font-weight: 500;
+    }
+    .home-test-button {
+        width: auto;
+        padding: 0.3rem 0.8rem;
     }
 }
