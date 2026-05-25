@@ -20,7 +20,7 @@
     font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-/* ===== Шапка (белая, как на главной) ===== */
+/* ===== Шапка ===== */
 .admin-header {
     background-color: white;
     display: flex;
@@ -272,6 +272,24 @@
     padding: 2rem;
     font-size: 1.2rem;
     color: var(--text-light);
+}
+
+.question-scales {
+    margin-top: 0.8rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
+}
+.scales-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 0.4rem;
+}
+.scales-list label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
 }
 
 /* ===== Адаптивность ===== */

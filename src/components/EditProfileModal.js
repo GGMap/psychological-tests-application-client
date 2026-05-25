@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_URL } from '../config';
 import { adminService } from '../services/adminService';
 import '../css/components/EditProfileModal.css';
+import toast from "react-hot-toast";
 
 const EditProfileModal = ({ isOpen, onClose, userId, currentAdminId, token, onSuccess }) => {
     const targetId = userId || currentAdminId;
@@ -76,14 +77,13 @@ const EditProfileModal = ({ isOpen, onClose, userId, currentAdminId, token, onSu
                     }),
                 });
                 if (response.status === 204) {
-                    // success
                 } else if (!response.ok) {
                     const errData = await response.json();
                     throw new Error(errData.message || 'Ошибка смены пароля');
                 }
             }
 
-            alert('Профиль успешно обновлён');
+            toast.success('Профиль успешно обновлён');
             if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
@@ -118,26 +118,26 @@ const EditProfileModal = ({ isOpen, onClose, userId, currentAdminId, token, onSu
                     {error && <div className="modal-error">{error}</div>}
 
                     <div className="form-row">
-                        <div className="form-group">
+                        <div className="form-group-methodology">
                             <label>Фамилия</label>
                             <input type="text" value={sname} onChange={(e) => setSname(e.target.value)} required />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group-methodology">
                             <label>Имя</label>
                             <input type="text" value={fname} onChange={(e) => setFname(e.target.value)} required />
                         </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group-methodology">
                         <label>Отчество</label>
                         <input type="text" value={mname} onChange={(e) => setMname(e.target.value)} />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group-methodology">
                         <label>Телефон</label>
                         <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                     </div>
 
 
-                        <div className="form-group checkbox-group">
+                        <div className="form-group-methodology checkbox-group">
                         <label>
                             Сменить пароль
                             <input type="checkbox" checked={changePassword} onChange={(e) => setChangePassword(e.target.checked)} />

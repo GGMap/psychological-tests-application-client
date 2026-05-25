@@ -27,10 +27,14 @@ const AdminSignIn = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(data.message || "Ошибка входа!");
+                if (response.status === 403) {
+                    setError("Неверный логин или пароль");
+                } else {
+                    setError(data.message || "Ошибка входа!");
+                }
                 return;
             }
-
+            sessionStorage.setItem('loggedInThisSession', 'true');
             login(data.token);
             navigate('/admin/profile');
         } catch (err) {

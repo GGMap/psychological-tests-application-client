@@ -11,6 +11,7 @@ import EditProfileModal from "../components/EditProfileModal";
 import {testsService} from '../services/testsService';
 import AdminResults from './AdminResults';
 import LogoBNTU from '../logo/Logo_BNTU.png';
+import toast from 'react-hot-toast';
 
 const AdminProfile = () => {
     const {logout, user, token, isSuperAdmin} = useAuth();
@@ -54,8 +55,8 @@ const AdminProfile = () => {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const tab = params.get('tab');
-        if (tab === 'tests') {
-            setActiveTab('tests');
+        if (tab && ['tests', 'results', 'admins'].includes(tab)) {
+            setActiveTab(tab);
         }
     }, [location.search]);
 
@@ -158,6 +159,17 @@ const AdminProfile = () => {
         navigate('/admin/signup');
     };
 
+    const handleDeleteTest = async (testId) => {
+        if (!window.confirm('Удалить тест? Все вопросы, варианты ответов и прохождения будут удалены без возможности восстановления.')) return;
+        try {
+            await testsService.deleteTest(testId, token);
+            toast.success('Тест удалён');
+            await fetchAllTests();
+        } catch (err) {
+            toast.error('Ошибка удаления теста: ' + err.message);
+        }
+    };
+
     return (
         <div className="admin-profile">
             <header className="admin-header">
@@ -202,6 +214,11 @@ const AdminProfile = () => {
             <div className="tab-content">
                 {activeTab === 'tests' && (
                     <div className="admin-tests-container">
+                        <div className="admin-tests-header">
+                        <button onClick={() => navigate('/admin/test-builder')} className="create-test-btn">
+                            + Создать тест
+                        </button>
+                        </div>
                         <div className="admin-search-bar">
                             <input
                                 type="text"
@@ -245,6 +262,14 @@ const AdminProfile = () => {
                                                 >
                                                     Редактировать
                                                 </button>
+                                                {isSuperAdmin && (
+                                                    <button
+                                                        className="admin-test-delete-btn"
+                                                        onClick={() => handleDeleteTest(test.id)}
+                                                    >
+                                                        Удалить тест
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -274,7 +299,7 @@ const AdminProfile = () => {
                         {message && <div className="success-message">{message}</div>}
                         {error && <div className="error-message">{error}</div>}
 
-                        {/* Форма поиска (без поля ID) */}
+                        {/* Форма поиска */}
                         <form onSubmit={handleSearch} className="search-form">
                             <div className="search-fields">
                                 <input
@@ -379,7 +404,7 @@ const AdminProfile = () => {
                                                         </button>
                                                     )}
 
-                                                    {/* Кнопка смены пароля для супер-админа (для других STANDARD) */}
+                                                    {/* Кнопка смены пароля для супер-админа */}
                                                     {isSuperAdmin && admin.id !== user?.id && admin.role !== 'SUPER' && (
                                                         <button
                                                             onClick={() => handleOpenAdminProfileModal(admin.id, fullName)}

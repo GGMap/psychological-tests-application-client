@@ -12,7 +12,7 @@ const TestPassing = () => {
     const [error, setError] = useState('');
     const [answers, setAnswers] = useState({});
     const [submitting, setSubmitting] = useState(false);
-    const [results, setResults] = useState(null);
+    const [completed, setCompleted] = useState(false);
 
     const loadQuestions = useCallback(async () => {
         try {
@@ -42,18 +42,38 @@ const TestPassing = () => {
         loadQuestions();
     }, [navigate, loadQuestions]);
 
-    const handleAnswerSelect = (questionId, optionId) => {
+    // Обработка выбора для одиночного выбора
+    const handleSingleChoice = (questionId, optionId) => {
         setAnswers(prev => ({ ...prev, [questionId]: optionId }));
     };
 
+    // Обработка выбора для множественного выбора
+    const handleMultipleChoice = (questionId, optionId, checked) => {
+        setAnswers(prev => {
+            const current = Array.isArray(prev[questionId]) ? prev[questionId] : [];
+            if (checked) {
+                return { ...prev, [questionId]: [...current, optionId] };
+            } else {
+                return { ...prev, [questionId]: current.filter(id => id !== optionId) };
+            }
+        });
+    };
+
     const allQuestionsAnswered = () => {
-        return questions.length > 0 && Object.keys(answers).length === questions.length;
+        for (const q of questions) {
+            const answer = answers[q.id];
+            if (q.type === 'MULTIPLE_CHOICE') {
+                if (!answer) return false;
+            } else if (q.type === 'CHECKBOXES') {
+                if (!answer || (Array.isArray(answer) && answer.length === 0)) return false;
+            }
+        }
+        return true;
     };
 
     const handleSubmit = async () => {
-        // Проверяем, что все вопросы отвечены
-        if (Object.keys(answers).length !== questions.length) {
-            alert('Ответьте на все вопросы');
+        if (!allQuestionsAnswered()) {
+            setError('Ответьте на все вопросы');
             return;
         }
         setSubmitting(true);
@@ -61,17 +81,22 @@ const TestPassing = () => {
             const studentId = sessionStorage.getItem('studentId');
             const attempt = await testsService.createTestAttempt(studentId, testId);
             const attemptId = attempt.id;
-            for (const [qId, optId] of Object.entries(answers)) {
-                await testsService.sendStudentAnswer(attemptId, qId, optId);
+            for (const q of questions) {
+                const qId = q.id;
+                const answer = answers[qId];
+                if (q.type === 'MULTIPLE_CHOICE') {
+                    await testsService.sendStudentAnswer(attemptId, qId, answer);
+                } else if (q.type === 'CHECKBOXES') {
+                    for (const optId of answer) {
+                        await testsService.sendStudentAnswer(attemptId, qId, optId);
+                    }
+                }
             }
-            const scores = await testsService.getTestScores(attemptId);
-            const resultsWithScales = await Promise.all(scores.map(async (score) => {
-                const scale = await testsService.getScaleById(score.scaleId);
-                return { ...score, scaleName: scale.name };
-            }));
-            setResults(resultsWithScales);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            setCompleted(true);
         } catch (err) {
-            alert('Ошибка при отправке результатов: ' + err.message);
+            setError('Ошибка при отправке результатов: ' + err.message);
+            console.error(err);
         } finally {
             setSubmitting(false);
         }
@@ -79,18 +104,13 @@ const TestPassing = () => {
 
     if (loading) return <div className="test-passing-loading">Загрузка вопросов...</div>;
     if (error) return <div className="test-passing-error">{error}</div>;
-    if (results) {
+    if (completed) {
         return (
-            <div className="test-results-container">
-                <h2>Результаты тестирования</h2>
-                {results.map(r => (
-                    <div key={r.id} className="result-card">
-                        <h3>{r.scaleName}</h3>
-                        <p>Балл: {r.score}</p>
-                        <p>Интерпретация: {r.interpretation}</p>
-                    </div>
-                ))}
-                <button onClick={() => navigate('/')} className="back-home-btn">На главную</button>
+            <div className="test-thanks-container">
+                <div className="thanks-card">
+                    <h2>Спасибо за прохождение тестирования!</h2>
+                    <button onClick={() => navigate('/')} className="back-home-btn">На главную</button>
+                </div>
             </div>
         );
     }
@@ -104,6 +124,12 @@ const TestPassing = () => {
             <div className="test-passing-questions-list">
                 {questions.map((question, idx) => {
                     const currentOptions = optionsMap[question.id] || [];
+                    const isMultiple = question.type === 'CHECKBOXES';
+                    const currentAnswer = answers[question.id];
+                    const isChecked = (optionId) => {
+                        if (isMultiple) return Array.isArray(currentAnswer) && currentAnswer.includes(optionId);
+                        return currentAnswer === optionId;
+                    };
                     return (
                         <div key={question.id} className="test-question-card">
                             <div className="test-question-header">
@@ -114,11 +140,17 @@ const TestPassing = () => {
                                 {currentOptions.map(opt => (
                                     <label key={opt.id} className="test-option">
                                         <input
-                                            type="radio"
+                                            type={isMultiple ? 'checkbox' : 'radio'}
                                             name={`question-${question.id}`}
                                             value={opt.id}
-                                            checked={answers[question.id] === opt.id}
-                                            onChange={() => handleAnswerSelect(question.id, opt.id)}
+                                            checked={isChecked(opt.id)}
+                                            onChange={(e) => {
+                                                if (isMultiple) {
+                                                    handleMultipleChoice(question.id, opt.id, e.target.checked);
+                                                } else {
+                                                    handleSingleChoice(question.id, opt.id);
+                                                }
+                                            }}
                                         />
                                         <span>{opt.text}</span>
                                     </label>
@@ -134,7 +166,7 @@ const TestPassing = () => {
                     onClick={handleSubmit}
                     disabled={submitting || !allQuestionsAnswered()}
                 >
-                    {submitting ? 'Отправка...' : 'Завершить и получить результаты'}
+                    {submitting ? 'Отправка...' : 'Завершить анкетирование'}
                 </button>
             </div>
         </div>

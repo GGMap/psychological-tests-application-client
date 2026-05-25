@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { API_URL } from '../config';
 import { handleUnauthorized } from '../contexts/authUtils';
 import '../css/pages/AdminSignUp.css';
+import toast from "react-hot-toast";
 
 const AdminSignUp = () => {
     const [surname, setSurname] = useState('');
@@ -49,7 +50,7 @@ const AdminSignUp = () => {
                 return;
             }
 
-            alert('Регистрация прошла успешно!');
+            toast.success('Регистрация прошла успешно!');
             navigate('/admin/profile');
         } catch (err) {
             setError(err.message);

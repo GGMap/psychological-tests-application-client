@@ -7,7 +7,7 @@
     margin-bottom: 0.5rem;
     flex-wrap: wrap;
 }
-.form-row .form-group {
+.form-row .form-group-methodology {
     flex: 1;
     min-width: 150px;
 }
@@ -15,8 +15,8 @@
     margin: 1rem;
 }
 
-.edit-profile-modal .form-group input,
-.edit-profile-modal .form-group select {
+.edit-profile-modal .form-group-methodology input,
+.edit-profile-modal .form-group-methodology select {
     width: 100%;
     box-sizing: border-box;
 }

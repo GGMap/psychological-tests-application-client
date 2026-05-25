@@ -16,6 +16,8 @@ const Home = () => {
     const [activeTab, setActiveTab] = useState('tests');
     const [isRegModalOpen, setIsRegModalOpen] = useState(false);
     const [selectedTestId, setSelectedTestId] = useState(null);
+    const hasLoggedIn = sessionStorage.getItem('loggedInThisSession') === 'true';
+    const showAdminTabs = isAuthenticated && hasLoggedIn;
 
     useEffect(() => {
         const fetchTests = async () => {
@@ -29,7 +31,6 @@ const Home = () => {
                 setLoading(false);
             }
         };
-        // Исправлено: .catch вместо .then
         fetchTests().catch(err => console.error('Ошибка при загрузке тестов:', err));
     }, []);
 
@@ -69,7 +70,7 @@ const Home = () => {
                     >
                         Тесты
                     </button>
-                    {isAuthenticated && (
+                    {showAdminTabs && (
                         <>
                             <button
                                 className={`home-tab ${activeTab === 'results' ? 'home-tab-active' : ''}`}
@@ -90,7 +91,7 @@ const Home = () => {
                 </div>
 
                 <div className="home-header-right">
-                    {!isAuthenticated ? (
+                    {!showAdminTabs ? (
                         <button onClick={handleAdminLogin} className="home-login-button">Войти</button>
                     ) : (
                         <button onClick={handleAdminProfile} className="home-profile-button">Профиль</button>

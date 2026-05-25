@@ -26,7 +26,6 @@ html, body, #root {
     font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-/* ===== Шапка (белая, как на главной) ===== */
 .admin-header {
     background-color: white;
     display: flex;
@@ -490,6 +489,47 @@ html, body, #root {
 
 .admin-error-message {
     color: #dc3545;
+}
+
+.admin-tests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.create-test-btn {
+    background-color: var(--bntu-green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+}
+
+.create-test-btn:hover {
+    background-color: var(--bntu-green-dark);
+}
+
+.create-test-btn:active {
+    transform: scale(0.98);
+}
+
+.admin-test-delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
 }
 
 /* ===== Адаптивность ===== */

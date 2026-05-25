@@ -112,6 +112,23 @@ export const testsService = {
         return true;
     },
 
+    createQuestion: async (questionData, token) => {
+        const response = await fetch(`${API_URL}/questions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(questionData),
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Ошибка создания вопроса');
+        }
+        if (response.status === 204) return true;
+        return response.json();
+    },
+
     // Варианты ответов
     searchAnswerOptions: async (questionId, token) => {
         const response = await fetch(`${API_URL}/answer-options/search`, {
@@ -185,7 +202,7 @@ export const testsService = {
         return true;
     },
 
-    // === Студенты ===
+    // Студенты
     searchFaculties: async (filters = {}) => {
         const response = await fetch(`${API_URL}/faculties/search`, {
             method: 'POST',
@@ -212,7 +229,7 @@ export const testsService = {
         return response.json();
     },
 
-    // === Попытки прохождения ===
+    //  Попытки прохождения
     createTestAttempt: async (studentId, testId, attemptDate = new Date().toISOString()) => {
         const response = await fetch(`${API_URL}/test-attempts`, {
             method: 'POST',
@@ -226,7 +243,7 @@ export const testsService = {
         return response.json();
     },
 
-    // === Ответы студента ===
+    // Ответы студента
     sendStudentAnswer: async (testAttemptId, questionId, answerOptionId) => {
         const response = await fetch(`${API_URL}/student-answers`, {
             method: 'POST',
@@ -245,11 +262,14 @@ export const testsService = {
         return response.json();
     },
 
-    // === Получение результатов ===
-    getTestScores: async (testAttemptId) => {
+    // Получение результатов
+    getTestScores: async (testAttemptId, token) => {
         const response = await fetch(`${API_URL}/test-attempt-scores`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token && { 'Authorization': `Bearer ${token}` })
+            },
             body: JSON.stringify({ testAttemptId }),
         });
         if (!response.ok) {
@@ -259,7 +279,7 @@ export const testsService = {
         return response.json();
     },
 
-    // Получение шкалы по ID (для отображения интерпретации)
+    // Получение шкалы по ID
     getScaleById: async (scaleId) => {
         const response = await fetch(`${API_URL}/scales/${scaleId}`, {
             method: 'GET',
@@ -338,7 +358,7 @@ export const testsService = {
         return response.json();
     },
 
-    // Получение варианта ответа по ID (публичный)
+    // Получение варианта ответа по ID
     getAnswerOptionById: async (optionId) => {
         const response = await fetch(`${API_URL}/answer-options/${optionId}`, {
             method: 'GET',
@@ -364,4 +384,207 @@ export const testsService = {
         return response.json();
     },
 
+    // Методики
+    searchMethodologies: async (filters = {}, token) => {
+        const response = await fetch(`${API_URL}/methodologies/search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(filters),
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки методик');
+        return response.json();
+    },
+    createMethodology: async (data, token) => {
+        const response = await fetch(`${API_URL}/methodologies`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('Ошибка создания методики');
+        return response.json();
+    },
+    updateMethodology: async (id, data, token) => {
+        const response = await fetch(`${API_URL}/methodologies`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ id, ...data }),
+        });
+        if (!response.ok) throw new Error('Ошибка обновления методики');
+        return response.json();
+    },
+    deleteMethodology: async (id, token) => {
+        const response = await fetch(`${API_URL}/methodologies/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error('Ошибка удаления методики');
+        return true;
+    },
+
+    // Шкалы
+    searchScales: async (filters, token) => {
+        const response = await fetch(`${API_URL}/scales/search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(filters),
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки шкал');
+        return response.json();
+    },
+    createScale: async (data, token) => {
+        const response = await fetch(`${API_URL}/scales`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('Ошибка создания шкалы');
+        return response.json();
+    },
+    updateScale: async (id, data, token) => {
+        const response = await fetch(`${API_URL}/scales`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ id, ...data }),
+        });
+        if (!response.ok) throw new Error('Ошибка обновления шкалы');
+        return response.json();
+    },
+    deleteScale: async (id, token) => {
+        const response = await fetch(`${API_URL}/scales/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error('Ошибка удаления шкалы');
+        return true;
+    },
+
+    // Диапазоны интерпретации
+    searchScoreRanges: async (filters, token) => {
+        const response = await fetch(`${API_URL}/score-ranges/search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(filters),
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки диапазонов');
+        return response.json();
+    },
+    createScoreRange: async (data, token) => {
+        const response = await fetch(`${API_URL}/score-ranges`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('Ошибка создания диапазона');
+        return response.json();
+    },
+    updateScoreRange: async (id, data, token) => {
+        const response = await fetch(`${API_URL}/score-ranges`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ id, ...data }),
+        });
+        if (!response.ok) throw new Error('Ошибка обновления диапазона');
+        return response.json();
+    },
+    deleteScoreRange: async (id, token) => {
+        const response = await fetch(`${API_URL}/score-ranges/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error('Ошибка удаления диапазона');
+        return true;
+    },
+
+    // Тесты
+    createTest: async (data, token) => {
+        const response = await fetch(`${API_URL}/tests`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('Ошибка создания теста');
+        return response.json();
+    },
+    updateTest: async (id, data, token) => {
+        const response = await fetch(`${API_URL}/tests`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ id, ...data }),
+        });
+        if (!response.ok) throw new Error('Ошибка обновления теста');
+        return response.json();
+    },
+    deleteTest: async (id, token) => {
+        const response = await fetch(`${API_URL}/tests/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error('Ошибка удаления теста');
+        return true;
+    },
+    getTestById: async (testId) => {
+        const response = await fetch(`${API_URL}/tests/${testId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки теста');
+        return response.json();
+    },
+
+    deleteTestAttempt: async (attemptId, token) => {
+        const response = await fetch(`${API_URL}/test-attempts/${attemptId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Ошибка удаления попытки');
+        }
+        return true;
+    },
+
+    // Связи шкала-вопрос
+    searchScaleQuestions: async (filters, token) => {
+        const response = await fetch(`${API_URL}/scale-questions/search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(filters),
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки связей');
+        return response.json();
+    },
+    createScaleQuestion: async (data, token) => {
+        const response = await fetch(`${API_URL}/scale-questions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('Ошибка создания связи');
+        return response.json();
+    },
+    deleteScaleQuestion: async (id, token) => {
+        const response = await fetch(`${API_URL}/scale-questions/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error('Ошибка удаления связи');
+        return true;
+    },
+
+    //Создание отчета
+    generateReport: async (params, token) => {
+        const response = await fetch(`${API_URL}/reports`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(params),
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Ошибка формирования отчёта');
+        }
+        return response.blob();
+    },
 };

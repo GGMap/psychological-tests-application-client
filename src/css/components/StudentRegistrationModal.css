@@ -13,10 +13,14 @@
     flex-wrap: wrap;
 }
 
-.registration-modal .form-group {
+.registration-modal .form-group-methodology {
     flex: 1;
     min-width: 0;
     margin-bottom: 0.75rem;
+}
+
+.form-group-methodology label {
+    font-size: 1.2rem;
 }
 
 .registration-modal .modal-buttons {
@@ -49,4 +53,25 @@
     padding: 0.6rem;
     border-radius: 10px;
     margin-bottom: 1rem;
+}
+
+.group-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.group-prefix-input {
+    max-width: 100px;
+    background: #f0f0f0;
+    text-align: center;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 12px;
+    padding: 0.6rem;
+    cursor: not-allowed;
+    box-sizing: border-box;
+}
+
+.group-suffix-input {
+    flex: 1;
 }

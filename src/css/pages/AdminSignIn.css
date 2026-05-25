@@ -1,4 +1,3 @@
-/* Используем те же цвета, что и в профиле администратора */
 :root {
     --bntu-green: #2a7f3e;
     --bntu-green-light: #3c9e53;
@@ -54,9 +53,9 @@
 .error-message {
     background-color: #fee2e2;
     color: #b91c1c;
-    padding: 0.5rem 0.5rem;    /* уменьшенные внутренние отступы */
+    padding: 0.5rem 0.5rem;
     border-radius: 8px;
-    font-size: 1rem;        /* нормальный читаемый размер */
+    font-size: 1rem;
     border-left: 3px solid #dc2626;
     margin: 0;
     animation: fadeIn 0.2s ease;
@@ -137,7 +136,7 @@
 
 .password-wrapper input {
     width: 100%;
-    padding-right: 45px; /* место для кнопки */
+    padding-right: 45px;
 }
 
 .toggle-password {
@@ -162,7 +161,7 @@
     display: block;
 }
 
-/* Адаптивность для маленьких экранов */
+/* Адаптивность */
 @media (max-width: 480px) {
     .signin-card {
         padding: 1.5rem;
